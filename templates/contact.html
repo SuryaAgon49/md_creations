@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Luxury Jewelry & Fashion Store</title>
+    <style>
+        /* Ultra-Modern Customer-Attracting CSS */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --secondary-gradient: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            --accent-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #2d2d2d 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-primary: 0 20px 40px rgba(102, 126, 234, 0.3);
+            --shadow-secondary: 0 30px 60px rgba(0, 0, 0, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-radius: 20px;
+            --animation-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--dark-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Ultra-Modern Header */
+        header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all var(--animation-speed) ease;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity var(--animation-speed) ease;
+            z-index: -1;
+        }
+
+        header:hover::before {
+            opacity: 0.1;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+            transition: all var(--animation-speed) ease;
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.8));
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            transition: all var(--animation-speed) ease;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--secondary-gradient);
+            border-radius: 10px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all var(--animation-speed) ease;
+            z-index: -1;
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0 2rem 0;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 400px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            filter: blur(100px);
+            opacity: 0.2;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.3); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);
+            transform: rotateX(0deg);
+            transition: all var(--animation-speed) ease;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(250, 112, 154, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(250, 112, 154, 0.8)); }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Contact Info */
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            transition: all var(--animation-speed) ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity var(--animation-speed) ease;
+            z-index: -1;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(250, 112, 154, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .info-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .info-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .info-card:hover .info-icon {
+            transform: rotate(360deg) scale(1.1);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .info-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .info-link {
+            color: #4facfe;
+            text-decoration: none;
+            transition: all var(--animation-speed) ease;
+            font-weight: 600;
+        }
+
+        .info-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+        }
+
+        /* Map Container */
+        .map-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .map-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--secondary-gradient);
+            opacity: 0;
+            transition: opacity var(--animation-speed) ease;
+            z-index: -1;
+        }
+
+        .map-container:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .map-container:hover::before {
+            opacity: 0.05;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.3"/><circle cx="25" cy="25" r="1" fill="white" opacity="0.2"/><circle cx="75" cy="75" r="1.5" fill="white" opacity="0.4"/><circle cx="80" cy="30" r="1" fill="white" opacity="0.3"/><circle cx="20" cy="70" r="1" fill="white" opacity="0.2"/></svg>');
+            animation: mapFloat 10s ease-in-out infinite;
+        }
+
+        @keyframes mapFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-top: 2rem;
+        }
+
+        .faq-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            transition: transform var(--animation-speed) ease;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--animation-speed) ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+        }
+
+        .faq-answer-content {
+            padding: 1.5rem 2rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 120px;
+            right: 30px;
+            z-index: 2001;
+        }
+
+        .flash-message {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            animation: flashSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes flashSlideIn {
+            from {
+                transform: translateX(100%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .info-card {
+                padding: 2rem;
+            }
+            
+            .faq-question,
+            .faq-answer-content {
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .hero {
+                padding: 3rem 0 2rem 0;
+            }
+            
+            .contact-section {
+                padding: 3rem 0;
+            }
+            
+            .info-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <nav class="container">
+            <div class="logo">✨ Luxury Store</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#jewelry">Jewelry</a></li>
+                <li><a href="#clothing">Clothing</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Get In Touch</h1>
+                <p>We're here to help you find the perfect luxury piece or answer any questions</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <!-- Contact Information Grid -->
+                <div class="contact-container">
+                    <div class="info-card">
+                        <div class="info-icon">📍</div>
+                        <h3 class="info-title">Visit Our Showroom</h3>
+                        <p class="info-text">
+                            123 Luxury Avenue<br>
+                            Fashion District, NY 10001<br>
+                            United States
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">📞</div>
+                        <h3 class="info-title">Call Us</h3>
+                        <p class="info-text">
+                            <a href="tel:+1555123456" class="info-link">+1 (555) 123-4567</a><br>
+                            <span style="font-size: 0.95rem; opacity: 0.8; margin-top: 0.5rem; display: block;">
+                                Mon - Sat: 9:00 AM - 8:00 PM<br>
+                                Sunday: 11:00 AM - 6:00 PM
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">✉️</div>
+                        <h3 class="info-title">Email Us</h3>
+                        <p class="info-text">
+                            <a href="mailto:hello@luxurystore.com" class="info-link">hello@luxurystore.com</a><br>
+                            <a href="mailto:support@luxurystore.com" class="info-link">support@luxurystore.com</a>
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">💬</div>
+                        <h3 class="info-title">Live Chat</h3>
+                        <p class="info-text">
+                            Get instant help from our luxury consultants<br>
+                            <span style="font-size: 0.95rem; opacity: 0.8; margin-top: 0.5rem; display: block;">
+                                Available 24/7 for premium members
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">🌟</div>
+                        <h3 class="info-title">VIP Services</h3>
+                        <p class="info-text">
+                            Personal shopping, custom designs,<br>
+                            and exclusive member events<br>
+                            <a href="mailto:vip@luxurystore.com" class="info-link">vip@luxurystore.com</a>
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">🕒</div>
+                        <h3 class="info-title">Business Hours</h3>
+                        <p class="info-text">
+                            Monday - Friday: 9:00 AM - 8:00 PM<br>
+                            Saturday: 10:00 AM - 7:00 PM<br>
+                            Sunday: 11:00 AM - 6:00 PM<br>
+                            <span style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem; display: block;">
+                                Holiday hours may vary
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Map Container -->
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        🗺️ Interactive Map Coming Soon - Visit Our Luxury Showroom
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="faq-section">
+                    <h2 class="faq-title">Frequently Asked Questions</h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            What are your shipping options and delivery times?
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                We offer express shipping worldwide with insurance. Domestic orders arrive within 2-3 business days, international orders within 5-7 business days. All jewelry comes with secure packaging and tracking.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Do you offer custom jewelry design services?
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes! Our master jewelers create bespoke pieces tailored to your vision. We offer consultation sessions, 3D design previews, and use only the finest materials. Custom orders typically take 4-6 weeks to complete.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            What is your return and exchange policy?
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                We offer a 30-day return policy for unworn items in original condition. All returns are processed within 5-7 business days. Custom and personalized items are final sale unless there's a manufacturing defect.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Are your jewelry pieces certified and authentic?
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Absolutely! All our jewelry comes with certificates of authenticity. Diamonds are GIA certified, precious metals are hallmarked, and designer pieces include brand authentication. We guarantee 100% authenticity.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Do you offer jewelry repair and maintenance services?
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes, we provide comprehensive jewelry services including cleaning, resizing, stone replacement, and restoration. Our certified jewelers ensure your pieces maintain their beauty and value for years to come.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            How can I become a VIP member?
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                VIP membership is available for customers with annual purchases over $5,000. Benefits include exclusive access to new collections, personal shopping services, special events, and priority customer support.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages" id="flashMessages"></div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Luxury Store. All rights reserved. | Crafted with ❤️</p>
+            <p style="margin-top: 1rem; opacity: 0.7;">Follow us on social media for exclusive updates and behind-the-scenes content</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // FAQ Toggle functionality
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-answer').classList.remove('active');
+                }
+            });
+            
+            // Toggle current FAQ item
+            faqItem.classList.toggle('active');
+            answer.classList.toggle('active');
+        }
+
+        // Flash message system
+        function showFlashMessage(message, type = 'info') {
+            const flashContainer = document.getElementById('flashMessages');
+            const flashMessage = document.createElement('div');
+            flashMessage.className = 'flash-message';
+            flashMessage.textContent = message;
+            
+            if (type === 'success') {
+                flashMessage.style.background = 'var(--accent-gradient)';
+            }
+            
+            flashContainer.appendChild(flashMessage);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                flashMessage.style.opacity = '0';
+                flashMessage.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    flashMessage.remove();
+                }, 300);
+            }, 5000);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize particles on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Add entrance animations to elements
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.info-card, .map-container, .faq-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                observer.observe(el);
+            });
+        });
+        // Show a flash message on page load
+        showFlashMessage('Welcome to our Contact Page! How can we assist you today?', 'success');
+    </script>
+</body>
+</html>
