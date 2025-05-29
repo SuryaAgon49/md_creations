@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Luxury Store</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* CSS Variables for consistent theming */
         :root {
+            --primary-color: #3b82f6;
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            --warning-gradient: linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%);
-            --dark-bg: #1a1a2e;
-            --card-bg: #ffffff;
-            --text-primary: #2d3748;
-            --text-secondary: #718096;
+            --secondary-color: #64748b;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
             --border-color: #e2e8f0;
-            --shadow-light: 0 4px 25px rgba(0, 0, 0, 0.08);
-            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
-            --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.1);
-            --border-radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
         }
 
+        /* Base styles */
         * {
             margin: 0;
             padding: 0;
@@ -31,19 +36,18 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
             color: var(--text-primary);
             line-height: 1.6;
-            min-height: 100vh;
+            font-size: 14px;
         }
 
-        /* Header Styles */
+        /* Admin Header */
         .admin-header {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
+            background: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
-            box-shadow: var(--shadow-light);
+            box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -53,31 +57,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
         }
 
         .admin-logo {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary-color);
+        }
+
+        .admin-logo i {
+            font-size: 1.5rem;
         }
 
         .admin-user {
             display: flex;
             align-items: center;
             gap: 1rem;
-            background: var(--card-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            box-shadow: var(--shadow-light);
         }
 
         .user-avatar {
@@ -90,26 +91,25 @@
             justify-content: center;
             color: white;
             font-weight: 600;
+            font-size: 1rem;
         }
 
         .logout-btn {
-            background: var(--danger-gradient);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
         }
 
         .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
+            background-color: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
         }
 
         /* Container */
@@ -119,68 +119,52 @@
             padding: 2rem;
         }
 
-        /* Dashboard Stats */
+        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary-gradient);
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-heavy);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .stat-content {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .stat-info h3 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
         }
 
         .stat-info p {
             color: var(--text-secondary);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             font-size: 0.875rem;
+            font-weight: 500;
         }
 
         .stat-icon {
             width: 60px;
             height: 60px;
             background: var(--primary-gradient);
-            border-radius: 50%;
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -188,40 +172,42 @@
             font-size: 1.5rem;
         }
 
-        /* Tab Navigation */
+        /* Dashboard Tabs */
         .dashboard-tabs {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 2rem;
-            background: var(--card-bg);
+            background: var(--surface-color);
             padding: 0.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
         }
 
         .tab-btn {
-            padding: 1rem 2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            border-radius: 12px;
-            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--background-color);
+            color: var(--text-primary);
         }
 
         .tab-btn.active {
             background: var(--primary-gradient);
             color: white;
-            box-shadow: var(--shadow-medium);
-        }
-
-        .tab-btn:hover:not(.active) {
-            background: rgba(102, 126, 234, 0.1);
+            box-shadow: var(--shadow-sm);
         }
 
         /* Tab Content */
@@ -233,131 +219,127 @@
             display: block;
         }
 
+        /* Section Headers */
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .section-title {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-primary);
         }
 
         .export-btn {
-            background: var(--success-gradient);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
         }
 
         .export-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
+            background-color: #16a34a;
+            transform: translateY(-1px);
         }
 
-        /* Form Styles */
+        /* Add Product Form */
         .add-product-form {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light);
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
             margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .add-product-form::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary-gradient);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
         }
 
         .form-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-header i {
+            color: var(--primary-color);
+            font-size: 1.25rem;
         }
 
         .form-header h3 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: var(--text-primary);
         }
 
         .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
+            font-weight: 500;
             color: var(--text-primary);
             font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: var(--transition);
-            background: var(--card-bg);
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background-color: var(--surface-color);
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
         }
 
         .form-group textarea {
-            height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
 
+        /* File Input */
         .file-input-wrapper {
             position: relative;
             border: 2px dashed var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
+            border-radius: var(--radius-md);
+            padding: 2rem 1rem;
             text-align: center;
-            transition: var(--transition);
+            transition: all 0.2s ease;
             cursor: pointer;
         }
 
         .file-input-wrapper:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: var(--primary-color);
+            background-color: rgb(59 130 246 / 0.05);
         }
 
         .file-input {
@@ -367,78 +349,101 @@
             cursor: pointer;
         }
 
-        /* Button Styles */
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1rem;
+        .file-input-content i {
+            font-size: 2rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-input-content p {
+            color: var(--text-primary);
             font-weight: 500;
-            transition: var(--transition);
-            text-decoration: none;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-input-content small {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        /* Buttons */
+        .btn {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-primary {
             background: var(--primary-gradient);
             color: white;
+            border-color: transparent;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .btn-danger {
-            background: var(--danger-gradient);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
+            filter: brightness(1.1);
         }
 
         .btn-warning {
-            background: var(--warning-gradient);
+            background-color: var(--warning-color);
             color: white;
+            border-color: var(--warning-color);
         }
 
         .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
+            background-color: #d97706;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
         }
 
         /* Products Grid */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
         .product-card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: var(--shadow-light);
-            transition: var(--transition);
-            position: relative;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-heavy);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .product-image {
             width: 100%;
-            height: 250px;
+            height: 200px;
             object-fit: cover;
-            background: var(--primary-gradient);
+            background-color: var(--background-color);
         }
 
         .product-info {
@@ -446,36 +451,37 @@
         }
 
         .product-name {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
             color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
 
         .product-category {
-            color: #667eea;
+            display: inline-block;
+            background-color: var(--background-color);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
             font-weight: 500;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .product-price {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
         }
 
         .product-description {
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
             font-size: 0.875rem;
-            line-height: 1.6;
+            line-height: 1.5;
+            margin-bottom: 1rem;
         }
 
         .product-actions {
@@ -483,18 +489,31 @@
             gap: 0.75rem;
         }
 
+        .product-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
         /* Orders Table */
         .orders-container {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: var(--shadow-light);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
         }
 
         .table-header {
             padding: 1.5rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-header h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
         .table {
@@ -507,173 +526,53 @@
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
         }
 
         .table th {
-            background: var(--card-bg);
+            background-color: var(--background-color);
             font-weight: 600;
             color: var(--text-primary);
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
-        .table tr:hover {
-            background: rgba(102, 126, 234, 0.05);
+        .table td {
+            color: var(--text-secondary);
         }
 
+        .table tbody tr:hover {
+            background-color: var(--background-color);
+        }
+
+        /* Status Badges */
         .status-badge {
-            padding: 0.375rem 0.75rem;
-            border-radius: 20px;
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
         }
 
         .status-pending {
-            background: linear-gradient(135deg, #fef3c7, #fcd34d);
+            background-color: #fef3c7;
             color: #92400e;
         }
 
         .status-processing {
-            background: linear-gradient(135deg, #dbeafe, #60a5fa);
+            background-color: #dbeafe;
             color: #1e40af;
         }
 
         .status-completed {
-            background: linear-gradient(135deg, #d1fae5, #34d399);
+            background-color: #d1fae5;
             color: #065f46;
         }
 
         .status-cancelled {
-            background: linear-gradient(135deg, #fee2e2, #f87171);
+            background-color: #fee2e2;
             color: #991b1b;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            margin: 2% auto;
-            padding: 2.5rem;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 600px;
-            box-shadow: var(--shadow-heavy);
-            animation: modalSlideIn 0.3s ease;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Flash Messages */
-        .flash-messages {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-        }
-
-        .flash-message {
-            background: var(--success-gradient);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 0.75rem;
-            box-shadow: var(--shadow-medium);
-            animation: slideInRight 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .admin-nav {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .dashboard-tabs {
-                flex-wrap: wrap;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .table {
-                font-size: 0.875rem;
-            }
-
-            .table th,
-            .table td {
-                padding: 0.75rem 0.5rem;
-            }
-
-            .modal-content {
-                margin: 5% auto;
-                padding: 1.5rem;
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
 
         /* Empty State */
@@ -686,23 +585,201 @@
         .empty-state i {
             font-size: 4rem;
             margin-bottom: 1rem;
-            opacity: 0.5;
+            color: var(--border-color);
         }
 
         .empty-state h3 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--surface-color);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .flash-message {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            max-width: 400px;
+        }
+
+        .flash-message i {
+            font-size: 1.25rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .admin-nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .admin-user {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .dashboard-tabs {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            
+            .tab-btn {
+                justify-content: center;
+                padding: 1rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .table {
+                font-size: 0.75rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-logo {
+                font-size: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-info h3 {
+                font-size: 1.5rem;
+            }
+            
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+            
+            .add-product-form {
+                padding: 1rem;
+            }
+            
+            .product-info {
+                padding: 1rem;
+            }
+            
+            .file-input-wrapper {
+                padding: 1rem;
+            }
+            
+            .file-input-content i {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <header class="admin-header">
         <nav class="admin-nav">
-            <div class="admin-logo">🛡️ Admin Panel</div>
+            <div class="admin-logo">
+                <i class="fas fa-shield-alt"></i>
+                Admin Panel
+            </div>
             <div class="admin-user">
+                <div class="user-avatar">
+                    {{ session.admin_email[0]|upper }}
+                </div>
                 <span>Welcome, {{ session.admin_email }}</span>
-                <a href="{{ url_for('admin_logout') }}" class="logout-btn">Logout</a>
+                <a href="{{ url_for('admin_logout') }}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
             </div>
         </nav>
     </header>
@@ -711,79 +788,145 @@
         <!-- Dashboard Stats -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">{{ products|length }}</div>
-                <div class="stat-label">Total Products</div>
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3>{{ products|length }}</h3>
+                        <p>Total Products</p>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ orders|length }}</div>
-                <div class="stat-label">Total Orders</div>
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3>{{ orders|length }}</h3>
+                        <p>Total Orders</p>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ orders|selectattr('status', 'equalto', 'pending')|list|length }}</div>
-                <div class="stat-label">Pending Orders</div>
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3>{{ orders|selectattr('status', 'equalto', 'pending')|list|length }}</h3>
+                        <p>Pending Orders</p>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">${{ "%.2f"|format(orders|sum(attribute='price', start=0)) }}</div>
-                <div class="stat-label">Total Revenue</div>
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <h3>${{ "%.2f"|format(orders|sum(attribute='price', start=0)) }}</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Tab Navigation -->
         <div class="dashboard-tabs">
-            <button class="tab-btn active" onclick="showTab('products')">Products</button>
-            <button class="tab-btn" onclick="showTab('orders')">Orders</button>
+            <button class="tab-btn active" onclick="showTab('products')">
+                <i class="fas fa-box"></i>
+                Products
+            </button>
+            <button class="tab-btn" onclick="showTab('orders')">
+                <i class="fas fa-shopping-cart"></i>
+                Orders
+            </button>
         </div>
 
         <!-- Products Tab -->
         <div id="products-tab" class="tab-content active">
-            <h2 class="section-title">Product Management</h2>
+            <div class="section-header">
+                <h2 class="section-title">Product Management</h2>
+                <button class="export-btn" onclick="exportData('products')">
+                    <i class="fas fa-download"></i>
+                    Export Products
+                </button>
+            </div>
             
             <!-- Add Product Form -->
             <div class="add-product-form">
-                <h3 style="margin-bottom: 1rem;">Add New Product</h3>
-                <form action="{{ url_for('manage_product') }}" method="POST" enctype="multipart/form-data">
+                <div class="form-header">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>Add New Product</h3>
+                </div>
+                <form action="{{ url_for('manage_product') }}" method="POST" enctype="multipart/form-data" id="productForm">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">Product Name *</label>
-                            <input type="text" id="name" name="name" required>
+                            <input type="text" id="name" name="name" required placeholder="Enter product name">
                         </div>
                         <div class="form-group">
                             <label for="category">Category *</label>
                             <select id="category" name="category" required>
                                 <option value="">Select Category</option>
-                                <option value="jewelry">Jewelry</option>
-                                <option value="clothing">Clothing</option>
+                                <option value="rings">Rings</option>
+                                <option value="necklaces">Necklaces</option>
+                                <option value="earrings">Earrings</option>
+                                <option value="bracelets">Bracelets</option>
+                                <option value="watches">Watches</option>
                                 <option value="accessories">Accessories</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="price">Price ($) *</label>
-                            <input type="number" id="price" name="price" step="0.01" min="0" required>
+                            <input type="number" id="price" name="price" step="0.01" min="0" required placeholder="0.00">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea id="description" name="description" placeholder="Detailed product description..."></textarea>
+                        <textarea id="description" name="description" placeholder="Enter detailed product description..."></textarea>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
                             <label for="image">Product Image</label>
-                            <input type="file" id="image" name="image" accept="image/*" class="file-input">
+                            <div class="file-input-wrapper">
+                                <input type="file" id="image" name="image" accept="image/*" class="file-input">
+                                <div class="file-input-content">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Click to upload image or drag and drop</p>
+                                    <small>PNG, JPG, JPEG up to 16MB</small>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="video">Product Video</label>
-                            <input type="file" id="video" name="video" accept="video/*" class="file-input">
+                            <label for="video">Product Video (Optional)</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="video" name="video" accept="video/*" class="file-input">
+                                <div class="file-input-content">
+                                    <i class="fas fa-video"></i>
+                                    <p>Click to upload video or drag and drop</p>
+                                    <small>MP4, MOV, AVI up to 16MB</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add Product
+                    </button>
                 </form>
             </div>
 
             <!-- Products List -->
-            <h3 style="margin-bottom: 1rem;">Existing Products</h3>
+            <div class="section-header">
+                <h3>Existing Products ({{ products|length }})</h3>
+            </div>
+            
             {% if products %}
                 <div class="products-grid">
                     {% for product in products %}
@@ -791,117 +934,160 @@
                         {% if product.image_path %}
                             <img src="{{ url_for('static', filename=product.image_path) }}" alt="{{ product.name }}" class="product-image">
                         {% else %}
-                            <div style="height: 200px; background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white;">No Image</div>
+                            <div class="product-image" style="background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                                <i class="fas fa-image"></i>
+                            </div>
                         {% endif %}
                         
                         <div class="product-info">
-                            <div class="product-name">{{ product.name }}</div>
-                            <div style="color: #667eea; font-weight: 600; margin-bottom: 0.5rem;">{{ product.category|title }}</div>
+                            <h4 class="product-name">{{ product.name }}</h4>
+                            <div class="product-category">{{ product.category|title }}</div>
                             <div class="product-price">${{ "%.2f"|format(product.price) }}</div>
-                            <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">{{ product.description[:80] }}{% if product.description|length > 80 %}...{% endif %}</p>
+                            {% if product.description %}
+                                <p class="product-description">{{ product.description[:100] }}{% if product.description|length > 100 %}...{% endif %}</p>
+                            {% endif %}
                             
                             <div class="product-actions">
-                                <button class="btn btn-warning" onclick="editProduct({{ product.id }}, '{{ product.name }}', '{{ product.category }}', {{ product.price }}, '{{ product.description }}')">Edit</button>
-                                <a href="{{ url_for('delete_product', product_id=product.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                                <button class="btn btn-warning" onclick="editProduct({{ product.id }}, '{{ product.name|replace("'", "\\'") }}', '{{ product.category }}', {{ product.price }}, '{{ (product.description or '')|replace("'", "\\'")|replace('\n', '\\n') }}')">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </button>
+                                <a href="{{ url_for('delete_product', product_id=product.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">
+                                    <i class="fas fa-trash"></i>
+                                    Delete
+                                </a>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <p style="text-align: center; color: #666; padding: 2rem;">No products added yet.</p>
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <h3>No Products Yet</h3>
+                    <p>Start by adding your first product using the form above.</p>
+                </div>
             {% endif %}
         </div>
 
         <!-- Orders Tab -->
         <div id="orders-tab" class="tab-content">
-            <h2 class="section-title">Order Management</h2>
+            <div class="section-header">
+                <h2 class="section-title">Order Management</h2>
+                <button class="export-btn" onclick="exportData('orders')">
+                    <i class="fas fa-download"></i>
+                    Export Orders
+                </button>
+            </div>
             
             {% if orders %}
-                <div class="orders-table">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Product</th>
-                                <th>Customer</th>
-                                <th>Contact</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for order in orders %}
-                            <tr>
-                                <td>#{{ order.id }}</td>
-                                <td>{{ order.product_name }}</td>
-                                <td>
-                                    <strong>{{ order.customer_name }}</strong><br>
-                                    <small>{{ order.customer_email }}</small>
-                                </td>
-                                <td>
-                                    {{ order.customer_phone }}<br>
-                                    <small>{{ order.customer_address[:30] }}{% if order.customer_address|length > 30 %}...{% endif %}</small>
-                                </td>
-                                <td>${{ "%.2f"|format(order.price) }}</td>
-                                <td>
-                                    <span class="status-badge status-{{ order.status }}">{{ order.status }}</span>
-                                </td>
-                                <td>{{ order.order_date[:10] }}</td>
-                                <td>
-                                    <form action="{{ url_for('update_order_status') }}" method="POST" style="display: inline;">
-                                        <input type="hidden" name="order_id" value="{{ order.id }}">
-                                        <select name="status" onchange="this.form.submit()" style="padding: 4px; border-radius: 4px;">
-                                            <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
-                                            <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
-                                            <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Completed</option>
-                                            <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
-                                        </select>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="orders-container">
+                    <div class="table-header">
+                        <h3>Recent Orders ({{ orders|length }})</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Product</th>
+                                    <th>Customer</th>
+                                    <th>Contact</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td><strong>#{{ order.id }}</strong></td>
+                                    <td>{{ order.product_name }}</td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ order.customer_name }}</strong><br>
+                                            <small style="color: var(--text-secondary);">{{ order.customer_email }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ order.customer_phone }}<br>
+                                            <small style="color: var(--text-secondary);">{{ order.customer_address[:30] }}{% if order.customer_address|length > 30 %}...{% endif %}</small>
+                                        </div>
+                                    </td>
+                                    <td><strong>${{ "%.2f"|format(order.price) }}</strong></td>
+                                    <td>
+                                        <span class="status-badge status-{{ order.status }}">{{ order.status|title }}</span>
+                                    </td>
+                                    <td>{{ order.order_date[:10] }}</td>
+                                    <td>
+                                        <form action="{{ url_for('update_order_status') }}" method="POST" style="display: inline;">
+                                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                                            <select name="status" onchange="this.form.submit()" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; background: white;">
+                                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                                                <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+                                                <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Completed</option>
+                                                <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             {% else %}
-                <p style="text-align: center; color: #666; padding: 2rem;">No orders received yet.</p>
+                <div class="empty-state">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>No Orders Yet</h3>
+                    <p>Orders will appear here when customers make purchases.</p>
+                </div>
             {% endif %}
         </div>
     </div>
 
     <!-- Flash Messages -->
-    <div class="flash-messages">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
                 {% for message in messages %}
-                    <div class="flash-message">{{ message }}</div>
+                    <div class="flash-message">
+                        <i class="fas fa-check-circle"></i>
+                        {{ message }}
+                    </div>
                 {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
+            </div>
+        {% endif %}
+    {% endwith %}
 
     <!-- Edit Product Modal -->
-    <div id="editModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-        <div style="background-color: white; margin: 5% auto; padding: 2rem; border-radius: 15px; width: 90%; max-width: 500px;">
-            <h3 style="margin-bottom: 1rem;">Edit Product</h3>
-            <form action="{{ url_for('manage_product') }}" method="POST" enctype="multipart/form-data">
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="form-header">
+                <i class="fas fa-edit"></i>
+                <h3>Edit Product</h3>
+            </div>
+            <form action="{{ url_for('manage_product') }}" method="POST" enctype="multipart/form-data" id="editProductForm">
                 <input type="hidden" id="editProductId" name="product_id">
                 
-                <div class="form-group">
-                    <label for="editName">Product Name *</label>
-                    <input type="text" id="editName" name="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editCategory">Category *</label>
-                    <select id="editCategory" name="category" required>
-                        <option value="jewelry">Jewelry</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="accessories">Accessories</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editName">Product Name *</label>
+                        <input type="text" id="editName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory">Category *</label>
+                        <select id="editCategory" name="category" required>
+                            <option value="rings">Rings</option>
+                            <option value="necklaces">Necklaces</option>
+                            <option value="earrings">Earrings</option>
+                            <option value="bracelets">Bracelets</option>
+                            <option value="watches">Watches</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -914,25 +1100,33 @@
                     <textarea id="editDescription" name="description"></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label for="editImage">Update Image</label>
-                    <input type="file" id="editImage" name="image" accept="image/*">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editImage">Update Image</label>
+                        <input type="file" id="editImage" name="image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="editVideo">Update Video</label>
+                        <input type="file" id="editVideo" name="video" accept="video/*">
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="editVideo">Update Video</label>
-                    <input type="file" id="editVideo" name="video" accept="video/*">
-                </div>
-                
-                <div style="display: flex; gap: 1rem;">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <button type="button" class="btn" style="background: #ccc;" onclick="closeEditModal()">Cancel</button>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                    <button type="button" class="btn" style="background: var(--border-color); color: var(--text-secondary);" onclick="closeEditModal()">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
+        // Tab Management
         function showTab(tabName) {
             // Hide all tab contents
             const tabContents = document.querySelectorAll('.tab-content');
@@ -947,12 +1141,13 @@
             event.target.classList.add('active');
         }
 
+        // Edit Product Modal
         function editProduct(id, name, category, price, description) {
             document.getElementById('editProductId').value = id;
             document.getElementById('editName').value = name;
             document.getElementById('editCategory').value = category;
             document.getElementById('editPrice').value = price;
-            document.getElementById('editDescription').value = description;
+            document.getElementById('editDescription').value = description || '';
             document.getElementById('editModal').style.display = 'block';
         }
 
@@ -960,17 +1155,95 @@
             document.getElementById('editModal').style.display = 'none';
         }
 
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // File Input Preview
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const wrapper = this.closest('.file-input-wrapper');
+                const content = wrapper.querySelector('.file-input-content');
+                
+                if (this.files && this.files[0]) {
+                    const fileName = this.files[0].name;
+                    content.innerHTML = `
+                        <i class="fas fa-check-circle" style="color: #22c55e;"></i>
+                        <p style="color: #22c55e;">File selected: ${fileName}</p>
+                    `;
+                }
+            });
+        });
+
+        // Export Data Function
+        function exportData(type) {
+            if (type === 'products') {
+                const products = {{ products|tojson }};
+                if (products.length === 0) {
+                    alert('No products to export');
+                    return;
+                }
+                
+                const ws = XLSX.utils.json_to_sheet(products);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Products');
+                XLSX.writeFile(wb, 'products_export.xlsx');
+            } else if (type === 'orders') {
+                const orders = {{ orders|tojson }};
+                if (orders.length === 0) {
+                    alert('No orders to export');
+                    return;
+                }
+                
+                const ws = XLSX.utils.json_to_sheet(orders);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Orders');
+                XLSX.writeFile(wb, 'orders_export.xlsx');
+            }
+        }
+
+        // Form Validation
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            const category = document.getElementById('category').value;
+            const price = document.getElementById('price').value;
+
+            if (!name || !category || !price) {
+                e.preventDefault();
+                alert('Please fill in all required fields (Name, Category, and Price)');
+                return false;
+            }
+
+            if (parseFloat(price) <= 0) {
+                e.preventDefault();
+                alert('Price must be greater than 0');
+                return false;
+            }
+        });
+
         // Auto-hide flash messages
         document.addEventListener('DOMContentLoaded', function() {
             const flashMessages = document.querySelectorAll('.flash-message');
             flashMessages.forEach(function(message) {
                 setTimeout(function() {
                     message.style.opacity = '0';
+                    message.style.transform = 'translateX(100%)';
                     setTimeout(function() {
                         message.remove();
                     }, 300);
                 }, 5000);
             });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditModal();
+            }
         });
     </script>
 </body>
